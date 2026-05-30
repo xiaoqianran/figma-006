@@ -59,6 +59,33 @@
   --shadow-button: 0 2px 8px -1px rgb(76 93 249 / 0.3);
 }
 
+/* Theme CSS variables for surfaces (used by screens for light/dark toggle polish) */
+.app-shell {
+  --bg: #161A21;
+  --surface: #1F2530;
+  --surface-2: #222833;
+  --text: #F8F4F4;
+  --text-muted: #73767A;
+  --text-secondary: #9FA1B0;
+  --border: #2a2f38;
+  --input-bg: #222833;
+  --card-bg: #1f2530;
+  --card-border: #2a2f38;
+}
+
+.app-shell.light {
+  --bg: #F8F7F5;
+  --surface: #FFFFFF;
+  --surface-2: #F1F0EE;
+  --text: #161A21;
+  --text-muted: #45484D;
+  --text-secondary: #5F636A;
+  --border: #e5e4e7;
+  --input-bg: #f1f0ee;
+  --card-bg: #FFFFFF;
+  --card-border: #e5e4e7;
+}
+
 body {
   font-family: var(--font-sans);
   background: #0f1116;
@@ -72,20 +99,78 @@ body {
   color: #161A21;
 }
 
+/* Phone + primitives light overrides */
 .app-shell.light .phone-frame-inner {
   background: #fff !important;
   color: #161A21 !important;
 }
 
 .app-shell.light .card {
-  background: #f8f7f5;
-  border-color: #e5e4e7;
+  background: var(--card-bg);
+  border-color: var(--card-border);
+  color: var(--text);
 }
 
 .app-shell.light .input {
-  background: #f1f0ee;
+  background: var(--input-bg);
   border-color: #d1d0d4;
   color: #161A21;
+}
+
+.app-shell.light .btn-ghost {
+  color: #161A21;
+}
+
+/* App shell header + selector in light (key polish for toggle) */
+.app-shell.light .app-header {
+  background: #f5f5f7;
+  border-bottom-color: #e5e4e7;
+}
+.app-shell.light .app-header h1 {
+  color: #161A21;
+}
+.app-shell.light .app-header .subtitle {
+  color: #5f636a;
+}
+.app-shell.light .screen-btn {
+  background: #f1f0ee;
+  color: #161A21;
+  border-color: #e5e4e7;
+}
+.app-shell.light .screen-btn:hover {
+  background: #e8e6e3;
+  color: #000;
+}
+.app-shell.light .screen-btn.active {
+  background: var(--blue-100);
+  color: white;
+}
+
+/* Bottom tab bar light */
+.app-shell.light .bottom-tab-bar {
+  background: #fff !important;
+  border-top-color: #e5e4e7 !important;
+}
+.app-shell.light .bottom-tab-bar .tab-inactive {
+  color: #73767A;
+}
+.app-shell.light .bottom-tab-bar .tab-inactive:hover {
+  color: #45484D;
+}
+
+/* Common border and text fixes for light inside screens */
+.app-shell.light .text-\[\#73767A\] { color: var(--text-muted) !important; }
+.app-shell.light .text-\[\#9FA1B0\] { color: var(--text-secondary) !important; }
+.app-shell.light .border-white\/10,
+.app-shell.light .border-white\/5 {
+  border-color: #e5e4e7 !important;
+}
+.app-shell.light .bg-\[\#161A21\],
+.app-shell.light .bg-\[\#1F2530\] {
+  background: var(--surface) !important;
+}
+.app-shell.light .bg-\[\#222833\] {
+  background: var(--surface-2) !important;
 }
 
 /* Demo App Layout */

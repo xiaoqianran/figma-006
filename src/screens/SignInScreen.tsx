@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 interface SignInScreenProps {
   onBack?: () => void;
   onContinue?: () => void;
@@ -5,6 +7,10 @@ interface SignInScreenProps {
 }
 
 export function SignInScreen({ onContinue, onSocial }: SignInScreenProps) {
+  // Controlled inputs (replaced uncontrolled defaultValue for proper UX)
+  const [emailOrPhone, setEmailOrPhone] = useState('alex.rivera@email.com');
+  const [password, setPassword] = useState('••••••••');
+
   return (
     <div className="h-full w-full bg-[#161A21] text-[#F8F4F4] flex flex-col">
       {/* Frame provides top title + back button for auth flow screens */}
@@ -16,11 +22,20 @@ export function SignInScreen({ onContinue, onSocial }: SignInScreenProps) {
       <div className="px-6 mt-8 space-y-4">
         <div>
           <div className="text-xs text-[#9FA1B0] mb-1.5 pl-1">Email or phone</div>
-          <input className="input" defaultValue="alex.rivera@email.com" />
+          <input 
+            className="input" 
+            value={emailOrPhone} 
+            onChange={(e) => setEmailOrPhone(e.target.value)} 
+          />
         </div>
         <div>
           <div className="text-xs text-[#9FA1B0] mb-1.5 pl-1">Password</div>
-          <input className="input" type="password" defaultValue="••••••••" />
+          <input 
+            className="input" 
+            type="password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+          />
         </div>
       </div>
 

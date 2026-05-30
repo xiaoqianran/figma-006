@@ -1,24 +1,56 @@
-import React from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowLeft, Loader2, Check } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface GiftCodeScreenProps {
   onBack?: () => void;
+  onRedeemSuccess?: (code: string) => void;
 }
 
-export function GiftCodeScreen({ onBack }: GiftCodeScreenProps) {
-  const [code, setCode] = React.useState('Rido 123');
+type SubmitStatus = 'idle' | 'loading' | 'success';
+
+export function GiftCodeScreen({ onBack, onRedeemSuccess }: GiftCodeScreenProps) {
+  const [code, setCode] = useState('Rido 123');
+  const [formError, setFormError] = useState('');
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>('idle');
 
   const handleRedeem = () => {
+    if (submitStatus !== 'idle') return;
+
     const trimmed = code.trim();
+
+    // Enhanced basic validation (task requirement)
     if (!trimmed) {
-      toast.error('Please enter a promo code');
+      setFormError('Please enter a promo code');
       return;
     }
-    toast.success(`Code "${trimmed}" redeemed! Enjoy your credit.`, {
-      duration: 2200,
-    });
-    // In a real flow you might navigate away here
+    if (trimmed.length < 4) {
+      setFormError('Code must be at least 4 characters');
+      return;
+    }
+    if (!/^[A-Za-z0-9\s-]+$/.test(trimmed)) {
+      setFormError('Code can only contain letters, numbers, spaces and dashes');
+      return;
+    }
+
+    setFormError('');
+    setSubmitStatus('loading');
+
+    // 2s fake processing + success checkmark before callback (task requirement)
+    setTimeout(() => {
+      setSubmitStatus('success');
+
+      const successMsg = `Code "${trimmed}" redeemed! Enjoy your credit.`;
+      toast.success(successMsg, { duration: 2200 });
+
+      setTimeout(() => {
+        onRedeemSuccess?.(trimmed);
+        // reset for demo re-use
+        setCode('Rido 123');
+        setFormError('');
+        setSubmitStatus('idle');
+      }, 650);
+    }, 2000);
   };
 
   const handleManualEntry = () => {
@@ -26,7 +58,7 @@ export function GiftCodeScreen({ onBack }: GiftCodeScreenProps) {
   };
 
   return (
-    <div className="h-full w-full bg-[#161A21] text-[#F8F4F4] flex flex-col">
+    <div className="h-full w-full flex flex-col" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
       {/* Header — matches Figma Gift Code Page exactly */}
       <div className="px-6 pt-4 pb-1 flex items-center">
         <button 
@@ -52,10 +84,12 @@ export function GiftCodeScreen({ onBack }: GiftCodeScreenProps) {
         <div className="mt-5">
           <input
             value={code}
-            onChange={(e) => setCode(e.target.value)}
-            className="w-full bg-[#1E293B] border border-[#1E293B] rounded-[12px] px-5 py-4 text-[18px] font-medium tracking-[-0.1px] placeholder:text-[#73767A] focus:outline-none focus:border-[#4C5DF9]/40"
+            onChange={(e) => { setCode(e.target.value); if (formError) setFormError(''); }}
+            disabled={submitStatus !== 'idle'}
+            className={`w-full bg-[#1E293B] border ${formError ? 'border-[#FF5050]' : 'border-[#1E293B]'} rounded-[12px] px-5 py-4 text-[18px] font-medium tracking-[-0.1px] placeholder:text-[#73767A] focus:outline-none focus:border-[#4C5DF9]/40 disabled:opacity-70`}
             placeholder="Enter promo code"
           />
+          {formError && <div className="text-[#FF5050] text-xs mt-1.5 pl-1">{formError}</div>}
         </div>
       </div>
 
@@ -121,13 +155,26 @@ export function GiftCodeScreen({ onBack }: GiftCodeScreenProps) {
         </div>
       </div>
 
-      {/* Primary action button — "Enter Card Manually?" from Figma (functions as redeem trigger) */}
+      {/* Primary action button — enhanced with loading/success states */}
       <div className="px-6 pb-4">
         <button 
           onClick={handleRedeem}
-          className="btn-primary"
+          disabled={submitStatus !== 'idle'}
+          className="btn-primary flex items-center justify-center gap-2 disabled:opacity-80 disabled:cursor-not-allowed"
         >
-          Redeem {code ? `"${code}"` : 'Code'}
+          {submitStatus === 'loading' && (
+            <>
+              <Loader2 size={18} className="animate-spin" />
+              Redeeming...
+            </>
+          )}
+          {submitStatus === 'success' && (
+            <>
+              <Check size={20} className="text-[#38C978]" />
+              Redeemed successfully
+            </>
+          )}
+          {submitStatus === 'idle' && `Redeem ${code ? `"${code}"` : 'Code'}`}
         </button>
       </div>
 
@@ -135,7 +182,8 @@ export function GiftCodeScreen({ onBack }: GiftCodeScreenProps) {
       <div className="px-6 pb-2">
         <button 
           onClick={handleManualEntry}
-          className="w-full py-4 rounded-[12px] bg-[#4C5DF9] text-white text-[17px] font-semibold tracking-[-0.1px] active:opacity-90 transition"
+          disabled={submitStatus !== 'idle'}
+          className="w-full py-4 rounded-[12px] bg-[#4C5DF9] text-white text-[17px] font-semibold tracking-[-0.1px] active:opacity-90 transition disabled:opacity-60"
         >
           Enter Card Manually?
         </button>

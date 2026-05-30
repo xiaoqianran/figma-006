@@ -1,22 +1,22 @@
 import { CreditCard, Settings, HelpCircle, LogOut, Star } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface ProfileScreenProps {
   onManagePayments?: () => void;
+  onViewRideHistory?: () => void;
   onLogout?: () => void;
 }
 
-export function ProfileScreen({ onLogout }: ProfileScreenProps) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const goToPayment = () => (window as any).__goTo?.('add-payment');
+export function ProfileScreen({ onManagePayments, onViewRideHistory, onLogout }: ProfileScreenProps) {
   const menuItems = [
-    { icon: <CreditCard size={18} />, label: 'Payment methods', action: goToPayment },
-    { icon: <Star size={18} />, label: 'Ride history & ratings', action: () => {} },
-    { icon: <Settings size={18} />, label: 'App settings', action: () => {} },
-    { icon: <HelpCircle size={18} />, label: 'Help & support', action: () => {} },
+    { icon: <CreditCard size={18} />, label: 'Payment methods', action: () => onManagePayments?.() },
+    { icon: <Star size={18} />, label: 'Ride history', action: () => onViewRideHistory?.() },
+    { icon: <Settings size={18} />, label: 'App settings', action: () => toast.info('App settings will open full preferences in the complete app') },
+    { icon: <HelpCircle size={18} />, label: 'Help & support', action: () => toast.info('Support chat opened — a representative will reply shortly (demo)') },
   ];
 
   return (
-    <div className="h-full w-full bg-[#161A21] text-[#F8F4F4] flex flex-col">
+    <div className="h-full w-full flex flex-col" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
       {/* Profile header */}
       <div className="px-6 pt-8 pb-6 flex items-center gap-4 border-b border-white/10">
         <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#4C5DF9] to-[#F89B54] flex items-center justify-center text-2xl font-bold text-white flex-shrink-0">

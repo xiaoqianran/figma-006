@@ -19,7 +19,7 @@ const tabs: { id: TabId; label: string; icon: React.ReactNode }[] = [
 export function BottomTabBar({ activeTab, onTabChange, className = '' }: BottomTabBarProps) {
   return (
     <div 
-      className={`absolute bottom-0 left-0 right-0 bg-[#161A21] border-t border-white/10 z-40 ${className}`}
+      className={`absolute bottom-0 left-0 right-0 bg-[#161A21] border-t border-white/10 z-40 bottom-tab-bar ${className}`}
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 8px)' }}
     >
       <div className="flex items-center justify-around h-14">
@@ -30,7 +30,7 @@ export function BottomTabBar({ activeTab, onTabChange, className = '' }: BottomT
               key={tab.id}
               onClick={() => onTabChange(tab.id)}
               className={`flex flex-col items-center justify-center flex-1 py-1 transition-colors ${
-                isActive ? 'text-[#4C5DF9]' : 'text-[#73767A] active:text-[#9FA1B0]'
+                isActive ? 'text-[#4C5DF9]' : 'text-[#73767A] active:text-[#9FA1B0] tab-inactive'
               }`}
             >
               <div className={isActive ? 'scale-110' : ''}>{tab.icon}</div>

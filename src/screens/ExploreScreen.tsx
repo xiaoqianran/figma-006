@@ -2,9 +2,12 @@ import { Search, MapPin, Clock, TrendingUp } from 'lucide-react';
 
 interface ExploreScreenProps {
   onExploreRide?: () => void;
+  savedPlaces?: Array<{ id: string; name: string; addr: string; time?: string; isFavorite?: boolean }>;
+  onToggleFavorite?: (id: string) => void;
+  onRecordRecent?: (place: { name: string; addr: string; time?: string }) => void;
 }
 
-export function ExploreScreen({ onExploreRide }: ExploreScreenProps) {
+export function ExploreScreen({ onExploreRide, savedPlaces = [], onToggleFavorite, onRecordRecent }: ExploreScreenProps) {
   const categories = [
     { icon: <TrendingUp size={18} />, label: 'Popular now', count: '128 rides' },
     { icon: <MapPin size={18} />, label: 'Near you', count: '42 rides' },
@@ -55,7 +58,7 @@ export function ExploreScreen({ onExploreRide }: ExploreScreenProps) {
         </div>
       </div>
 
-      {/* Suggestions */}
+      {/* Suggestions — now interactive: tap to ride, star to favorite / record recent (persisted) */}
       <div className="mt-7 px-6 flex-1">
         <div className="flex items-center justify-between mb-3">
           <div className="text-[15px] font-semibold">Trending destinations</div>
@@ -63,26 +66,52 @@ export function ExploreScreen({ onExploreRide }: ExploreScreenProps) {
         </div>
 
         <div className="space-y-2.5">
-          {suggestions.map((s, i) => (
-            <button 
-              key={i}
-              onClick={onExploreRide}
-              className="card w-full flex items-center justify-between active:bg-[#252c38] transition text-left"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-[#222833] flex items-center justify-center flex-shrink-0">
-                  <MapPin size={17} className="text-[#F89B54]" />
+          {suggestions.map((s, i) => {
+            // Check if this trending item matches a saved/favorited place (for star state)
+            const matched = savedPlaces.find(sp => sp.name.toLowerCase() === s.place.toLowerCase());
+            const isFav = !!matched?.isFavorite;
+            return (
+              <div 
+                key={i}
+                className="card w-full flex items-center justify-between active:bg-[#252c38] transition text-left"
+              >
+                <button 
+                  onClick={() => {
+                    onExploreRide?.();
+                    onRecordRecent?.({ name: s.place, addr: 'Trending destination', time: s.time });
+                  }}
+                  className="flex-1 flex items-center gap-3 text-left min-w-0"
+                >
+                  <div className="w-9 h-9 rounded-xl bg-[#222833] flex items-center justify-center flex-shrink-0">
+                    <MapPin size={17} className="text-[#F89B54]" />
+                  </div>
+                  <div className="font-medium">{s.place}</div>
+                </button>
+                <div className="flex items-center gap-2 text-right text-sm pr-1 flex-shrink-0">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (matched && onToggleFavorite) {
+                        onToggleFavorite(matched.id);
+                      } else {
+                        // Record as recent even if not yet favorited
+                        onRecordRecent?.({ name: s.place, addr: 'Trending destination', time: s.time });
+                      }
+                    }}
+                    className="p-1 text-[#F89B54] hover:scale-110 active:scale-95 transition"
+                    aria-label={isFav ? 'Unfavorite' : 'Favorite trending place'}
+                    title={isFav ? 'Remove favorite' : 'Favorite this place'}
+                  >
+                    {isFav ? '★' : '☆'}
+                  </button>
+                  <div className="text-[#F89B54] font-semibold">{s.price}</div>
+                  <div className="text-[#73767A] text-xs flex items-center gap-1 justify-end">
+                    <Clock size={11} /> {s.time}
+                  </div>
                 </div>
-                <div className="font-medium">{s.place}</div>
               </div>
-              <div className="text-right text-sm">
-                <div className="text-[#F89B54] font-semibold">{s.price}</div>
-                <div className="text-[#73767A] text-xs flex items-center gap-1 justify-end">
-                  <Clock size={11} /> {s.time}
-                </div>
-              </div>
-            </button>
-          ))}
+            );
+          })}
         </div>
       </div>
 

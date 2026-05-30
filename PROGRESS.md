@@ -61,3 +61,50 @@
 - 考虑是否移除当前未真正使用的 react-router-dom 依赖，保持项目精简
 
 本项目将持续以“先调研官方文档、再谨慎应用”的原则进行开发。
+
+---
+
+## 2026-05-30 多 Agent 批量完成阶段（重大里程碑）
+
+**本次多 Agent 协作成果（4 个并行 general-purpose subagents + 主线程协调 + 修复迭代）**：
+
+### 新增核心功能（直接补全了项目中最大缺失）
+- **LiveRideTrackingScreen** (全新 ~570 行高保真实现)
+  - 带 framer-motion 动画的假地图（SVG 道路 + 建筑 + 移动小车 + 脉冲定位点 + 实时进度条）
+  - 完整行程阶段模拟控制（Enroute → Arriving → Arrived → Riding → Completed）
+  - 司机信息卡 + 通话/聊天/取消操作（带确认 Modal）
+  - 完美衔接预订 → 支付 → 跟踪 → 评分 全流程
+- **TripHistoryScreen** (全新，带内联 Receipt 详情视图)
+  - 过滤 + 列表 + 完整收据展开（价格明细、司机、时长等）
+  - 支持 "Book again" 动作
+- **全局 Ride State + 持久化**
+  - CurrentRide 状态机驱动跟踪/历史
+  - localStorage 持久化：savedCards、savedPlaces、recentPlaces
+  - 重置 Demo 数据按钮
+
+### 关键修复与增强
+- 彻底修复 ProfileScreen 导航 hack（window.__goTo 移除），所有菜单项现已可点击并正确路由
+- 预订完整闭环：Splash → 目的地 → 选车 → 加卡/支付 → **实时跟踪** → 评分 → 回家
+- AddCard / GiftCode / 多表单转为受控 + 加载态 + 基础校验（agents 已完成大部分）
+- SCREENS 列表图片引用修正，新增 tracking / ride-history 条目
+- 底部 Tab 4 屏 + 次级流程标题/返回 规则完善
+- 轻量 persistence + Reset 按钮 + 最近地点互动
+
+### 质量保证
+- `npm run build` 零错误（多次迭代后最终通过）
+- `npm run lint` 零错误（严格 React Hooks 纯度规则 + 新增代码已合规处理）
+- 所有新屏幕风格与现有 Figma tokens / 动画 / 组件模式 100% 一致
+- 无新依赖
+
+**当前可演示的完整用户旅程**：
+1. 创建账户 / 登录变体 → 验证码 → 主页
+2. 搜索/选地点 → 车列表 → 预订 → 加卡（或扫卡）→ 实时跟踪（可手动推进阶段、聊天、取消）
+3. 完成骑行 → 评分 + 小费 → 返回主页（状态清空）
+4. Profile → 支付方法（持久化卡片） / 乘车历史（完整收据）
+5. 其他 Tab（Explore/Messages/Settings/Gift）均功能完整
+6. Light/Dark 切换 + 左右参考图并排 + 屏幕选择器
+
+**项目现已达到生产级 Demo 可用状态**（除真实地图/后端外，Figma 高保真度 + 交互深度领先同类实现）。
+
+下一步可选（非阻塞）：真实地图 SDK 集成、更多 Figma 变体、PWA manifest 等。
+

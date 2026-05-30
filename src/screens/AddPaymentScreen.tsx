@@ -6,24 +6,27 @@ interface SavedCard {
   brand: string;
   last4: string;
   expiry: string;
+  holder?: string;
 }
 
 interface AddPaymentScreenProps {
   onBack?: () => void;
   onAddNew?: () => void;
+  savedCards?: SavedCard[];
+  onSelectCard?: (cardId: string) => void;
 }
 
-export function AddPaymentScreen({ onBack, onAddNew }: AddPaymentScreenProps) {
-  const [selectedCardId, setSelectedCardId] = useState<string>('c1');
+export function AddPaymentScreen({ onBack, onAddNew, savedCards = [], onSelectCard }: AddPaymentScreenProps) {
+  const [selectedCardId, setSelectedCardId] = useState<string>('');
 
-  const savedCards: SavedCard[] = [
-    { id: 'c1', brand: 'Visa', last4: '4242', expiry: '12/28' },
-    { id: 'c2', brand: 'Mastercard', last4: '8821', expiry: '03/27' },
-  ];
+  const currentCards = savedCards.length > 0 ? savedCards : [];
+  const effectiveSelected = selectedCardId && currentCards.some(c => c.id === selectedCardId)
+    ? selectedCardId
+    : (currentCards[0]?.id || '');
 
   const handleSelectCard = (cardId: string) => {
     setSelectedCardId(cardId);
-    // Demo: update default selection (in real app this would persist preference)
+    onSelectCard?.(cardId);
   };
 
   const handleAddNew = () => {
@@ -31,7 +34,7 @@ export function AddPaymentScreen({ onBack, onAddNew }: AddPaymentScreenProps) {
   };
 
   return (
-    <div className="h-full w-full bg-[#161A21] text-[#F8F4F4] flex flex-col overflow-auto">
+    <div className="h-full w-full flex flex-col overflow-auto" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
       {/* High-fidelity header matching Figma "Payment method" ref (dark) */}
       <div className="px-5 pt-3 pb-2 flex items-center bg-[#161A21]">
         <button
@@ -51,8 +54,8 @@ export function AddPaymentScreen({ onBack, onAddNew }: AddPaymentScreenProps) {
         <div className="mb-5">
           <div className="text-xs uppercase tracking-[1.5px] text-[#73767A] mb-2 pl-1">YOUR CARDS</div>
           <div className="space-y-2">
-            {savedCards.map((card) => {
-              const isSelected = selectedCardId === card.id;
+            {currentCards.map((card) => {
+              const isSelected = effectiveSelected === card.id;
               return (
                 <button
                   key={card.id}

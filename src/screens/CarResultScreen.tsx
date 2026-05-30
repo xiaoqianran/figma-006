@@ -17,7 +17,7 @@ export function CarResultScreen({ onBookRide }: CarResultScreenProps) {
   const selected = rides.find(r => r.id === selectedRide)!;
 
   return (
-    <div className="h-full w-full bg-[#161A21] text-[#F8F4F4] flex flex-col">
+    <div className="h-full w-full flex flex-col" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
       {/* Trip summary header (inside content, frame provides top bar for secondary screens) */}
       <div className="px-6 pt-5 pb-3 border-b border-white/10">
         <div className="flex items-center justify-between text-sm">
@@ -71,7 +71,7 @@ export function CarResultScreen({ onBookRide }: CarResultScreenProps) {
       </div>
 
       {/* Bottom CTA (scrolls with content; secondary screens sit under frame title bar) */}
-      <div className="px-6 pb-6 pt-2 border-t border-white/10 bg-[#161A21]">
+      <div className="px-6 pb-6 pt-2 border-t border-white/10" style={{ background: 'var(--bg)' }}>
         <button 
           onClick={() => onBookRide?.(selected.id)}
           className="btn-primary"

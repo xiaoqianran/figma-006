@@ -160,7 +160,7 @@ export function MessagesScreen(_props: MessagesScreenProps) {
   // ==================== CHAT DETAIL VIEW (matches Figma Messages Page ref) ====================
   if (activeChat) {
     return (
-      <div className="h-full w-full bg-[#161A21] text-[#F8F4F4] flex flex-col">
+      <div className="h-full w-full flex flex-col" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
         {/* Custom chat header — faithful to Figma dark variant */}
         <div className="px-6 pt-3 pb-2.5 flex items-center justify-between border-b border-white/5 flex-shrink-0">
           <div className="flex items-center gap-3">
@@ -201,7 +201,7 @@ export function MessagesScreen(_props: MessagesScreenProps) {
         </div>
 
         {/* Messages list (chat bubbles) */}
-        <div className="flex-1 overflow-y-auto px-4 pt-6 pb-2 space-y-1.5 bg-[#161A21]">
+        <div className="flex-1 overflow-y-auto px-4 pt-6 pb-2 space-y-1.5" style={{ background: 'var(--bg)' }}>
           {chatMessages.map((msg) => {
             const isSent = msg.isSent;
             return (
@@ -244,7 +244,7 @@ export function MessagesScreen(_props: MessagesScreenProps) {
         </div>
 
         {/* Message input bar — exact match to Figma Messages Page (extra pb clears BottomTabBar in tab context) */}
-        <div className="px-4 pb-14 pt-2 bg-[#161A21] border-t border-white/5 flex-shrink-0">
+        <div className="px-4 pb-14 pt-2 border-t border-white/5 flex-shrink-0" style={{ background: 'var(--bg)' }}>
           <div className="flex items-center gap-2 bg-[#1e293b] rounded-2xl px-4 py-1.5">
             <input
               type="text"
@@ -271,7 +271,7 @@ export function MessagesScreen(_props: MessagesScreenProps) {
 
   // ==================== MESSAGES LIST / INBOX VIEW ====================
   return (
-    <div className="h-full w-full bg-[#161A21] text-[#F8F4F4] flex flex-col">
+    <div className="h-full w-full flex flex-col" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
       {/* Header with search + new message action */}
       <div className="px-6 pt-6">
         <div className="flex items-center justify-between">
