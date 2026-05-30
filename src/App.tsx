@@ -231,13 +231,13 @@ export default function App() {
           />
         );
       case 'sign-in-1':
-        return <SignInVariant1 onBack={handleBack} onContinue={() => goTo('verify-page')} />;
+        return <SignInVariant1 variant="create" onBack={handleBack} onContinue={() => goTo('verify-page')} />;
       case 'sign-in-2':
-        return <SignInVariant1 onBack={handleBack} onContinue={() => goTo('verify-page')} />;
+        return <SignInVariant1 variant="profile" onBack={handleBack} onContinue={() => goTo('destination')} />;
       case 'sign-in-social':
         return <SignInSocial onBack={handleBack} onContinue={() => goTo('verify-page')} />;
       case 'verify-page':
-        return <VerifyPage onBack={handleBack} onVerify={() => { toast.success('Verified!'); goTo('destination'); }} />;
+        return <VerifyPage onVerify={() => { toast.success('Verified!'); goTo('destination'); }} />;
       default:
         return <div className="p-8 text-center text-sm">Screen not implemented yet</div>;
     }
@@ -299,8 +299,20 @@ export default function App() {
           <div className="mb-2 text-[10px] uppercase tracking-widest text-[#73767A]">iPhone 14 Pro — Live Preview</div>
           
           <PhoneFrame 
-            title={!isTabScreen(currentScreen) && currentScreen !== 'splash' && currentScreen !== 'add-payment' ? active.label : undefined}
-            showBack={!isTabScreen(currentScreen) && currentScreen !== 'splash' && currentScreen !== 'add-payment'}
+            title={
+              !isTabScreen(currentScreen) && 
+              currentScreen !== 'splash' && 
+              currentScreen !== 'add-payment' &&
+              !['sign-in-1', 'sign-in-2', 'sign-in-social', 'verify-page'].includes(currentScreen)
+                ? active.label 
+                : undefined
+            }
+            showBack={
+              !isTabScreen(currentScreen) && 
+              currentScreen !== 'splash' && 
+              currentScreen !== 'add-payment' &&
+              !['sign-in-1', 'sign-in-2', 'sign-in-social', 'verify-page'].includes(currentScreen)
+            }
             onBack={handleBack}
             variant="dark"
           >
