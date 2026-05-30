@@ -187,7 +187,7 @@ export default function App() {
   }
 
   const active = SCREENS.find(s => s.id === currentScreen)!;
-  const refSrc = new URL(`figma-refs/${active.ref}`, import.meta.env.BASE_URL).href;
+  const refSrc = `${import.meta.env.BASE_URL}figma-refs/${active.ref}`;
 
   function goTo(screen: ScreenId) {
     setCurrentScreen(screen);
