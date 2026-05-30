@@ -50,6 +50,7 @@ type ScreenId = typeof SCREENS[number]['id'];
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenId>('splash');
   const [showRef, setShowRef] = useState(true);
+  const [isLight, setIsLight] = useState(false);
 
   // === Bottom Tab Navigation Model ===
   // Primary tabs live inside the phone and control main navigation.
@@ -243,7 +244,7 @@ export default function App() {
   }
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${isLight ? 'light' : 'dark'}`}>
       <header className="app-header">
         <div className="max-w-5xl mx-auto flex items-end justify-between">
           <div>
@@ -252,6 +253,12 @@ export default function App() {
           </div>
           <div className="flex items-center gap-3 text-xs">
             <div className="px-3 py-1 rounded-full bg-[#1a1f28] text-[#73767A] font-mono">375×812 • Sen</div>
+            <button 
+              onClick={() => setIsLight(!isLight)} 
+              className="px-3 py-1 rounded-full bg-[#1a1f28] hover:bg-[#252c38] transition"
+            >
+              {isLight ? 'Dark' : 'Light'} theme
+            </button>
             <button 
               onClick={() => setShowRef(!showRef)} 
               className="px-3 py-1 rounded-full bg-[#1a1f28] hover:bg-[#252c38] transition"
