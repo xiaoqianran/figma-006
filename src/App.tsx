@@ -157,7 +157,7 @@ export default function App() {
         return (
           <div className="relative h-full w-full">
             <ProfileScreen 
-              onManagePayments={() => goTo('add-card')}
+              onManagePayments={() => goTo('add-payment')}
               onLogout={() => {
                 toast('Signed out');
                 setActiveTab('home');
@@ -206,9 +206,22 @@ export default function App() {
       case 'gift-code':
         return <GiftCodeScreen onBack={() => goTo('settings')} />;
       case 'add-payment':
-        return <AddPaymentScreen onBack={handleBack} />;
+        return (
+          <AddPaymentScreen 
+            onBack={handleBack} 
+            onAddNew={() => goTo('add-card')} 
+          />
+        );
       case 'search-flags':
-        return <SearchFlagsScreen onBack={handleBack} onSelect={(flag) => { toast.success(`Selected ${flag}`); handleBack(); }} />;
+        return (
+          <SearchFlagsScreen 
+            onBack={handleBack} 
+            onSelect={(country, dial) => {
+              toast.success(`Country code set to ${dial} (${country})`);
+              handleBack();
+            }} 
+          />
+        );
       default:
         return <div className="p-8 text-center text-sm">Screen not implemented yet</div>;
     }
@@ -264,8 +277,8 @@ export default function App() {
           <div className="mb-2 text-[10px] uppercase tracking-widest text-[#73767A]">iPhone 14 Pro — Live Preview</div>
           
           <PhoneFrame 
-            title={!isTabScreen(currentScreen) && currentScreen !== 'splash' ? active.label : undefined}
-            showBack={!isTabScreen(currentScreen) && currentScreen !== 'splash'}
+            title={!isTabScreen(currentScreen) && currentScreen !== 'splash' && currentScreen !== 'add-payment' ? active.label : undefined}
+            showBack={!isTabScreen(currentScreen) && currentScreen !== 'splash' && currentScreen !== 'add-payment'}
             onBack={handleBack}
             variant="dark"
           >

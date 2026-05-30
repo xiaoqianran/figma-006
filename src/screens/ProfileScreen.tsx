@@ -6,8 +6,10 @@ interface ProfileScreenProps {
 }
 
 export function ProfileScreen({ onLogout }: ProfileScreenProps) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const goToPayment = () => (window as any).__goTo?.('add-payment');
   const menuItems = [
-    { icon: <CreditCard size={18} />, label: 'Payment methods', action: () => (window as any).__goTo?.('add-payment') },
+    { icon: <CreditCard size={18} />, label: 'Payment methods', action: goToPayment },
     { icon: <Star size={18} />, label: 'Ride history & ratings', action: () => {} },
     { icon: <Settings size={18} />, label: 'App settings', action: () => {} },
     { icon: <HelpCircle size={18} />, label: 'Help & support', action: () => {} },
