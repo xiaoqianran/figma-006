@@ -552,6 +552,7 @@ export default function App() {
       <footer className="text-center py-3 text-[10px] text-[#45484D] border-t border-[#1f2530]">
         Built autonomously by multi-agent team • Based on Figma "Final UI" page (Rideshare UI Kit) • 
         <span className="text-[#4C5DF9]"> MCP connected</span>
+        <span className="ml-2 text-[#FF6B3B]">• Forced redeploy: 2026-05-30 19:32</span>
       </footer>
     </div>
   );
