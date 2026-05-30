@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 
 interface MessagesScreenProps {
   onBack?: () => void;
+  onOpenChat?: (name: string) => void;
 }
 
 interface Conversation {
@@ -33,7 +34,8 @@ const SEED_MESSAGES: Message[] = [
   { id: 104, text: "", isSent: true, time: "1:00 AM", isImage: true },
 ];
 
-export function MessagesScreen({ onBack }: MessagesScreenProps) {
+/* eslint-disable @typescript-eslint/no-unused-vars */
+export function MessagesScreen(_props: MessagesScreenProps) {
   const [search, setSearch] = useState('');
   const [conversations, setConversations] = useState<Conversation[]>([
     { id: 1, name: 'Michael Torres', last: 'On my way! ETA 6 minutes.', time: 'now', unread: 2, avatar: 'MT' },
