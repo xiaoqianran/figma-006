@@ -17,6 +17,9 @@ import { SettingsScreen } from './screens/SettingsScreen';
 import { GiftCodeScreen } from './screens/GiftCodeScreen';
 import { AddPaymentScreen } from './screens/AddPaymentScreen';
 import { SearchFlagsScreen } from './screens/SearchFlagsScreen';
+import { SignInVariant1 } from './screens/SignInVariant1';
+import { SignInSocial } from './screens/SignInSocial';
+import { VerifyPage } from './screens/VerifyPage';
 import { toast } from 'sonner';
 
 // Available screens in the Rideshare demo (progressively implemented from Figma Final UI)
@@ -36,6 +39,10 @@ const SCREENS = [
   { id: 'profile', label: 'Profile / Settings', ref: 'settings.png' },
   { id: 'add-payment', label: 'Add Payment Page', ref: 'add-payment.png' },
   { id: 'search-flags', label: 'Search Flags', ref: 'search-flags.png' },
+  { id: 'sign-in-1', label: 'Sign in Page 1', ref: 'sign-in-1.png' },
+  { id: 'sign-in-2', label: 'Sign in Page 2', ref: 'sign-in-2.png' },
+  { id: 'sign-in-social', label: 'Sign in Social', ref: 'sign-in-social.png' },
+  { id: 'verify-page', label: 'Verify Page', ref: 'verify-page.png' },
 ] as const;
 
 type ScreenId = typeof SCREENS[number]['id'];
@@ -222,6 +229,14 @@ export default function App() {
             }} 
           />
         );
+      case 'sign-in-1':
+        return <SignInVariant1 onBack={handleBack} onContinue={() => goTo('verify-page')} />;
+      case 'sign-in-2':
+        return <SignInVariant1 onBack={handleBack} onContinue={() => goTo('verify-page')} />;
+      case 'sign-in-social':
+        return <SignInSocial onBack={handleBack} onContinue={() => goTo('verify-page')} />;
+      case 'verify-page':
+        return <VerifyPage onBack={handleBack} onVerify={() => { toast.success('Verified!'); goTo('destination'); }} />;
       default:
         return <div className="p-8 text-center text-sm">Screen not implemented yet</div>;
     }
