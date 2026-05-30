@@ -15,6 +15,8 @@ import { RatingScreen } from './screens/RatingScreen';
 import { CarResultScreen } from './screens/CarResultScreen';
 import { SettingsScreen } from './screens/SettingsScreen';
 import { GiftCodeScreen } from './screens/GiftCodeScreen';
+import { AddPaymentScreen } from './screens/AddPaymentScreen';
+import { SearchFlagsScreen } from './screens/SearchFlagsScreen';
 import { toast } from 'sonner';
 
 // Available screens in the Rideshare demo (progressively implemented from Figma Final UI)
@@ -32,6 +34,8 @@ const SCREENS = [
   { id: 'gift-code', label: 'Gift Code Page', ref: 'gift-code.png' },
   { id: 'explore', label: 'Explore / Search', ref: 'destination.png' },
   { id: 'profile', label: 'Profile / Settings', ref: 'settings.png' },
+  { id: 'add-payment', label: 'Add Payment Page', ref: 'add-payment.png' },
+  { id: 'search-flags', label: 'Search Flags', ref: 'search-flags.png' },
 ] as const;
 
 type ScreenId = typeof SCREENS[number]['id'];
@@ -201,6 +205,10 @@ export default function App() {
         return <SettingsScreen onBack={handleBack} onGiftCode={() => goTo('gift-code')} />;
       case 'gift-code':
         return <GiftCodeScreen onBack={() => goTo('settings')} />;
+      case 'add-payment':
+        return <AddPaymentScreen onBack={handleBack} />;
+      case 'search-flags':
+        return <SearchFlagsScreen onBack={handleBack} onSelect={(flag) => { toast.success(`Selected ${flag}`); handleBack(); }} />;
       default:
         return <div className="p-8 text-center text-sm">Screen not implemented yet</div>;
     }

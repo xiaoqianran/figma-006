@@ -5,9 +5,9 @@ interface ProfileScreenProps {
   onLogout?: () => void;
 }
 
-export function ProfileScreen({ onManagePayments, onLogout }: ProfileScreenProps) {
+export function ProfileScreen({ onLogout }: ProfileScreenProps) {
   const menuItems = [
-    { icon: <CreditCard size={18} />, label: 'Payment methods', action: onManagePayments },
+    { icon: <CreditCard size={18} />, label: 'Payment methods', action: () => (window as any).__goTo?.('add-payment') },
     { icon: <Star size={18} />, label: 'Ride history & ratings', action: () => {} },
     { icon: <Settings size={18} />, label: 'App settings', action: () => {} },
     { icon: <HelpCircle size={18} />, label: 'Help & support', action: () => {} },
